@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Çalışmaları | Barış Kaya</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="works.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header class="header scrolled" id="header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">BK<span class="logo-dot">.</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html#about">Hakkımda</a></li>
+                <li><a href="index.html#projects">Projeler</a></li>
+                <li><a href="index.html#works">Çalışmalar</a></li>
+                <li><a href="index.html#contact">İletişim</a></li>
+                <li><a href="cv.html" class="nav-cv">CV</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        </nav>
+    </header>
+
+    <main class="works-page">
+        <div class="works-hero">
+            <a href="index.html#works" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+                Geri Dön
+            </a>
+            <div class="works-badge">Çalışmalarım</div>
+            <h1 class="works-title">JavaScript <span class="gradient-text">Çalışmaları</span></h1>
+            <p class="works-desc">DOM manipülasyonu, dinamik arayüz ve frontend uygulama ödevlerim</p>
+        </div>
+
+        <div class="assignments-grid">
+
+            <div class="assignment-card">
+                <div class="assignment-num">01</div>
+                <div class="assignment-body">
+                    <h3>ATM Uygulaması</h3>
+                    <p>JavaScript ile geliştirilen tarayıcı tabanlı ATM simülatörü. Para yatırma, çekme, bakiye sorgulama gibi temel ATM işlevleri tek bir HTML dosyasında hayata geçirildi.</p>
+                    <div class="assignment-tags">
+                        <span>JavaScript</span><span>HTML</span><span>DOM</span>
+                    </div>
+                    <a href="https://github.com/bariska35" target="_blank" class="assignment-link">
+                        GitHub'da Gör
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="assignment-card">
+                <div class="assignment-num">02</div>
+                <div class="assignment-body">
+                    <h3>Netflix Arayüz Klonu</h3>
+                    <p>Netflix ana sayfa arayüzünü taklit eden JavaScript ve CSS projesi. Film/dizi kartları, dinamik listeleme ve sürükle-kaydır tarzı kategori düzeni içeriyor.</p>
+                    <div class="assignment-tags">
+                        <span>JavaScript</span><span>CSS</span><span>HTML</span>
+                    </div>
+                    <a href="https://github.com/bariska35" target="_blank" class="assignment-link">
+                        GitHub'da Gör
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
