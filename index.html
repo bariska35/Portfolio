@@ -44,6 +44,7 @@
                     <p class="hero-sub">Öğrendiklerini uygulamaya dönüştüren, araştırmayı ve farklı çözümler üretmeyi seven bir yazılım geliştiriciyim.</p>
                     <div class="hero-cta">
                         <a href="#projects" class="btn btn-primary">Seçili projeler <span>↗</span></a>
+                        <button class="btn btn-ai" id="hero-ai-cta" type="button"><span>✦</span> Yapay zekâya sor</button>
                     </div>
                     <div class="hero-meta">
                         <span><b>05</b> proje</span><span class="meta-separator"></span><span><b>08+</b> teknoloji</span><span class="meta-separator"></span><span><b>03</b> deneyim</span>
@@ -106,6 +107,37 @@
 
     <a href="#home" class="back-to-top" id="back-to-top" aria-label="Başa dön">↑ <span>Başa dön</span></a>
     <footer class="footer"><div class="footer-inner"><a href="#home" class="logo">BK<i>.</i></a><p>© 2026 Barış Kaya · Merakla, özenle, sürekli.</p></div></footer>
+
+    <div class="ai-chat" id="ai-chat">
+        <button class="ai-chat-trigger" id="ai-chat-trigger" type="button" aria-label="AI sohbetini aç" aria-expanded="false" aria-controls="ai-chat-panel">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="5" width="16" height="13" rx="4"/><path d="M8 21v-3M16 21v-3M8 10h.01M16 10h.01M9 14h6M12 2v3" stroke-linecap="round"/><path d="M9.5 2h5" stroke-linecap="round"/></svg>
+            <span class="ai-chat-trigger-label">AI</span>
+        </button>
+
+        <section class="ai-chat-panel" id="ai-chat-panel" role="dialog" aria-modal="false" aria-labelledby="ai-chat-title" aria-hidden="true">
+            <div class="ai-chat-header">
+                <div class="ai-chat-heading">
+                    <span class="ai-chat-avatar">✦</span>
+                    <span><strong id="ai-chat-title">Barış AI</strong><small id="ai-chat-subtitle">CV ve projeler hakkında sor</small></span>
+                </div>
+                <button class="ai-chat-close" id="ai-chat-close" type="button" aria-label="Sohbeti kapat">×</button>
+            </div>
+            <div class="ai-chat-messages" id="ai-chat-messages" aria-live="polite">
+                <div class="ai-message ai-message-bot" id="ai-chat-welcome">Merhaba! Ben Barış’ın portföy asistanıyım. Eğitim, lise, İngilizce seviyesi, deneyim, projeler, kullandığı teknolojiler veya iletişim hakkında bana soru sorabilirsin.</div>
+            </div>
+            <div class="ai-chat-suggestions" id="ai-chat-suggestions">
+                <button type="button" data-question="education">Nerede mezun oldu?</button>
+                <button type="button" data-question="languages">İngilizce seviyesi nedir?</button>
+                <button type="button" data-question="skills">Hangi yazılım dillerini kullanıyor?</button>
+                <button type="button" data-question="projects">Projeleri neler?</button>
+                <button type="button" data-question="experience">Nerede staj yaptı?</button>
+            </div>
+            <form class="ai-chat-form" id="ai-chat-form">
+                <input id="ai-chat-input" type="text" autocomplete="off" placeholder="Bir soru yaz..." aria-label="Barış AI'a soru sor">
+                <button type="submit" aria-label="Mesaj gönder">↗</button>
+            </form>
+        </section>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

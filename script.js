@@ -60,6 +60,161 @@ if ('IntersectionObserver' in window && sections.length) {
     sections.forEach(section => sectionObserver.observe(section));
 }
 
+const chatTrigger = document.getElementById('ai-chat-trigger');
+const chatPanel = document.getElementById('ai-chat-panel');
+const chatClose = document.getElementById('ai-chat-close');
+const chatForm = document.getElementById('ai-chat-form');
+const chatInput = document.getElementById('ai-chat-input');
+const chatMessages = document.getElementById('ai-chat-messages');
+const heroAiCta = document.getElementById('hero-ai-cta');
+const chatCopy = {
+    tr: {
+        subtitle: 'CV ve projeler hakkında sor',
+        welcome: 'Merhaba! Ben Barış’ın portföy asistanıyım. Eğitim, lise, İngilizce seviyesi, deneyim, projeler, kullandığı teknolojiler veya iletişim hakkında bana soru sorabilirsin.',
+        placeholder: 'Bir soru yaz...',
+        close: 'Sohbeti kapat',
+        send: 'Mesaj gönder',
+        suggestions: ['Nerede mezun oldu?', 'İngilizce seviyesi nedir?', 'Hangi yazılım dillerini kullanıyor?', 'Projeleri neler?', 'Nerede staj yaptı?'],
+        answers: {
+            education: 'Barış Kaya, İzmir Ekonomi Üniversitesi Bilgisayar Programcılığı bölümünde 2024–2026 yılları arasında eğitim aldı ve mezun oldu.',
+            highSchool: 'Barış Kaya, 2019–2023 yılları arasında Küçükyalı Mesleki ve Teknik Anadolu Lisesi’nde Bilgisayar Programcılığı okudu.',
+            skills: 'JavaScript, PHP, Python, Java, C#, SQL, MySQL, HTML, CSS, Git ve GitHub kullanıyor.',
+            languages: 'Evet, İngilizce biliyor. İngilizce seviyesi B1, Türkçe ise ana dili.',
+            tools: 'VS Code, IntelliJ IDEA, PyCharm, WebStorm, SQL Server Management Studio, Git, GitHub, Adobe Photoshop ve Adobe Animate kullanıyor.',
+            experience: '20.07.2026–11.09.2026 arasında NISO Yazılım Teknolojileri A.Ş.’de yazılım stajyeri olarak JavaScript, hata ayıklama, iş kuralları, Excel/JSON veri akışları, Git ve GitHub üzerine çalıştı. 09.2023–06.2024 arasında BDH Bilişim Destek Hizmetleri A.Ş.’de, 04.2023–09.2023 arasında da Çağdaş Vizyon Muhasebe’de staj yaptı.',
+            projects: 'OfficeDaysManagement (JavaScript, Excel/JSON, Git), Zaman Cüzdanı (PHP, MySQL, JavaScript), Sky Pass (Python, Tkinter, MySQL), EKOFIT Spor Sistemi (Java, MySQL, JDBC) ve bu kişisel portföy projesi üzerinde çalıştı.',
+            certificate: 'Global Kariyer tarafından verilen Web Tasarım Sertifikası bulunuyor.',
+            github: 'GitHub hesabı: github.com/bariska35',
+            contact: 'Barış Kaya’ya kaya.baris0035@gmail.com adresinden, GitHub üzerinden github.com/bariska35 veya LinkedIn profili üzerinden ulaşabilirsin.',
+            location: 'Barış Kaya İzmir’de yaşıyor ve kariyerine burada devam ediyor. CV’de doğum yeri veya aslen nereli olduğuna dair ayrı bir bilgi yer almıyor.',
+            about: 'Barış Kaya, İzmir’de yaşayan ve web ile yazılım geliştirme alanlarında kendini geliştiren bir yazılım geliştirici.',
+            availability: 'Barış Kaya yeni iş ve staj fırsatlarına, proje ve iş birliklerine açık.',
+            fallback: 'Bilmiyorum; bu konu hakkında bilgi veremiyorum. CV ve portföy bilgilerimde bununla ilgili bir bilgi bulunmuyor.'
+        }
+    },
+    en: {
+        subtitle: 'Ask about the CV and projects',
+        welcome: 'Hi! I’m Barış’s portfolio assistant. You can ask me about his high school, education, English level, experience, projects, technologies, or contact details.',
+        placeholder: 'Ask a question...',
+        close: 'Close chat',
+        send: 'Send message',
+        suggestions: ['Where did he graduate?', 'What is his English level?', 'Which programming languages does he use?', 'What are his projects?', 'Where did he intern?'],
+        answers: {
+            education: 'Barış Kaya studied Computer Programming at Izmir University of Economics from 2024 to 2026 and graduated from the program.',
+            highSchool: 'Barış Kaya studied Computer Programming at Küçükyalı Vocational and Technical Anatolian High School from 2019 to 2023.',
+            skills: 'He works with JavaScript, PHP, Python, Java, C#, SQL, MySQL, HTML, CSS, Git, and GitHub.',
+            languages: 'Yes, he speaks English at B1 level. Turkish is his native language.',
+            tools: 'He uses VS Code, IntelliJ IDEA, PyCharm, WebStorm, SQL Server Management Studio, Git, GitHub, Adobe Photoshop, and Adobe Animate.',
+            experience: 'From July 20 to September 11, 2026, he worked as a software development intern at NISO Software Technologies Inc., focusing on JavaScript, debugging, business rules, Excel/JSON data flows, Git, and GitHub. He also interned at BDH IT Support Services Inc. from September 2023 to June 2024 and at Çağdaş Vizyon Accounting from April to September 2023.',
+            projects: 'His projects include OfficeDaysManagement (JavaScript, Excel/JSON, Git), Time Wallet (PHP, MySQL, JavaScript), Sky Pass (Python, Tkinter, MySQL), EKOFIT Gym System (Java, MySQL, JDBC), and this personal portfolio website.',
+            certificate: 'He has a Web Design Certificate from Global Career.',
+            github: 'GitHub profile: github.com/bariska35',
+            contact: 'You can contact Barış Kaya at kaya.baris0035@gmail.com, through github.com/bariska35, or via his LinkedIn profile.',
+            location: 'Barış Kaya is based in Izmir and continues his career there. His CV does not include a separate birthplace or hometown detail.',
+            about: 'Barış Kaya is a software developer based in Izmir, focused on improving through web and software development projects.',
+            availability: 'Barış Kaya is open to new job and internship opportunities, projects, and collaborations.',
+            fallback: 'I do not know; I cannot provide information about that. It is not included in the CV or portfolio information.'
+        }
+    }
+};
+
+const normalizeChatText = text => text.toLocaleLowerCase('tr-TR').replace(/ı/g, 'i').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const chatHasAny = (text, words) => words.some(word => text.includes(word));
+
+// Keep the assistant generous with natural phrasing while limiting answers
+// to facts that are actually present in the portfolio/CV.
+const chatIntentKeywords = {
+    highSchool: ['lise', 'lisede', 'liseden', 'high school', 'highschool', 'vocational high school'],
+    languages: ['ingilizce', 'english', 'turkce', 'turkish', 'ana dil', 'anadili', 'native language', 'yabanci dil', 'dil seviyesi', 'language level', 'english level', 'b1', 'hangi dilleri biliyor', 'hangi dilleri konusuyor', 'what languages does he speak', 'which languages does he speak', 'does he speak'],
+    certificate: ['sertifika', 'sertifikasi', 'certificate', 'certification', 'credential'],
+    tools: ['arac', 'ide', 'editor', 'vscode', 'visual studio code', 'intellij', 'pycharm', 'webstorm', 'photoshop', 'animate', 'sql server management', 'hangi programlari', 'which tools', 'what tools'],
+    education: ['mezun', 'universite', 'uni', 'okul', 'egitim', 'mezuniyet', 'bolum', 'degree', 'college', 'studied', 'graduate', 'university', 'education', 'school'],
+    skills: ['programlama dili', 'programlama dilleri', 'yazilim dili', 'yazilim dilleri', 'hangi dilleri', 'dilleri', 'dil', 'kodlama', 'teknoloji', 'teknolojiler', 'kullan', 'yetenek', 'tech stack', 'stack', 'programming language', 'programming languages', 'language', 'languages', 'technology', 'technologies', 'skill', 'skills', 'database', 'veri tabani'],
+    projects: ['proje', 'projeler', 'portfoy', 'calisma alani', 'calismalari', 'uygulama', 'applications', 'project', 'projects', 'portfolio', 'built', 'officedaysmanagement', 'office days', 'zaman cuzdani', 'time wallet', 'sky pass', 'ekofit'],
+    experience: ['staj', 'stajyer', 'deneyim', 'is gecmisi', 'calisti', 'calisma gecmisi', 'sirket', 'firma', 'niso', 'bdh', 'cagdas vizyon', 'experience', 'intern', 'internship', 'worked', 'company', 'companies', 'employer', 'employment', 'career history', 'where did he work'],
+    github: ['github', 'git hub', 'repo', 'repository', 'kodlari', 'source code'],
+    contact: ['iletisim', 'iletisim bilgileri', 'email', 'e mail', 'eposta', 'e posta', 'mail', 'ulas', 'ulasilir', 'contact', 'reach', 'linkedin'],
+    location: ['nereli', 'aslen', 'memleket', 'hangi sehirden', 'sehirden', 'nerede yas', 'hangi sehir', 'izmir', 'where from', 'hometown', 'where does he live', 'where is he based', 'where based', 'city', 'based in'],
+    availability: ['is ariyor', 'yeni is', 'is firsati', 'staj firsati', 'firsatlara acik', 'calismaya acik', 'acik mi', 'available', 'open to', 'new job', 'job opportunity', 'looking for a job', 'hire', 'hiring', 'career'],
+    about: ['baris kaya', 'baris kim', 'kimdir', 'kimsin', 'hakkinda', 'kendini tanit', 'who is', 'who are', 'about him', 'introduce']
+};
+
+const getChatAnswer = (question, lang) => {
+    const normalized = normalizeChatText(question);
+    const answers = chatCopy[lang].answers;
+
+    // More specific intents come first because words such as "school" or
+    // "language" can otherwise overlap with broader education/skills terms.
+    const intentOrder = ['highSchool', 'languages', 'certificate', 'tools', 'projects', 'experience', 'github', 'contact', 'location', 'availability', 'education', 'skills', 'about'];
+    const matchedIntent = intentOrder.find(intent => chatHasAny(normalized, chatIntentKeywords[intent]));
+    return matchedIntent ? answers[matchedIntent] : answers.fallback;
+};
+
+const appendChatMessage = (message, type) => {
+    if (!chatMessages) return;
+    const item = document.createElement('div');
+    item.className = `ai-message ai-message-${type}`;
+    item.textContent = message;
+    chatMessages.appendChild(item);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+};
+
+const sendChatQuestion = question => {
+    const value = question.trim();
+    if (!value || !chatInput) return;
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'tr';
+    appendChatMessage(value, 'user');
+    chatInput.value = '';
+    window.setTimeout(() => appendChatMessage(getChatAnswer(value, lang), 'bot'), 220);
+};
+
+const applyChatLanguage = lang => {
+    if (!chatPanel || !chatCopy[lang]) return;
+    const copy = chatCopy[lang];
+    const subtitle = document.getElementById('ai-chat-subtitle');
+    const welcome = document.getElementById('ai-chat-welcome');
+    const suggestions = document.querySelectorAll('.ai-chat-suggestions button');
+    const sendButton = chatForm?.querySelector('button');
+
+    if (subtitle) subtitle.textContent = copy.subtitle;
+    if (welcome && chatMessages?.children.length === 1) welcome.textContent = copy.welcome;
+    if (chatInput) {
+        chatInput.placeholder = copy.placeholder;
+        chatInput.setAttribute('aria-label', lang === 'en' ? 'Ask Barış AI a question' : 'Barış AI’a soru sor');
+    }
+    if (chatClose) chatClose.setAttribute('aria-label', copy.close);
+    if (sendButton) sendButton.setAttribute('aria-label', copy.send);
+    suggestions.forEach((button, index) => {
+        button.textContent = copy.suggestions[index];
+    });
+};
+
+const setChatOpen = isOpen => {
+    if (!chatPanel || !chatTrigger) return;
+    chatPanel.classList.toggle('open', isOpen);
+    chatPanel.setAttribute('aria-hidden', String(!isOpen));
+    chatTrigger.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) chatInput?.focus();
+};
+
+heroAiCta?.addEventListener('click', () => setChatOpen(true));
+
+if (chatTrigger && chatPanel) {
+    chatTrigger.addEventListener('click', () => setChatOpen(!chatPanel.classList.contains('open')));
+    chatClose?.addEventListener('click', () => setChatOpen(false));
+    chatForm?.addEventListener('submit', event => {
+        event.preventDefault();
+        sendChatQuestion(chatInput?.value || '');
+    });
+    document.querySelectorAll('.ai-chat-suggestions button').forEach(button => {
+        button.addEventListener('click', () => sendChatQuestion(button.textContent));
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') setChatOpen(false);
+    });
+    applyChatLanguage(localStorage.getItem('siteLang') === 'en' ? 'en' : 'tr');
+}
+
 const langToggle = document.getElementById('lang-toggle');
 const indexTranslations = {
     tr: {
@@ -69,6 +224,7 @@ const indexTranslations = {
         heroTitle: '<span class="hero-name">Barış <span class="gradient-text">Kaya</span></span><small class="hero-role">Yazılım geliştirici</small>',
         heroSub: 'Öğrendiklerimi uygulamaya dönüştüren, araştırmayı ve farklı çözümler üretmeyi seven bir yazılım geliştiriciyim.',
         primaryCta: 'Seçili projeler <span>↗</span>',
+        aiCta: '<span>✦</span> Yapay zekâya sor',
         cvCta: "CV'yi incele <span>↓</span>",
         stats: ['<b>05</b> proje', '<b>08+</b> teknoloji', '<b>03</b> deneyim'],
         noteTop: '<span>✦</span> learning by building',
@@ -112,6 +268,7 @@ const indexTranslations = {
         heroTitle: '<span class="hero-name">Barış <span class="gradient-text">Kaya</span></span><small class="hero-role">Software developer</small>',
         heroSub: 'A software developer who turns what he learns into practice and enjoys researching, experimenting, and creating different solutions.',
         primaryCta: 'Selected projects <span>↗</span>',
+        aiCta: '<span>✦</span> Ask the AI',
         cvCta: 'View my CV <span>↓</span>',
         stats: ['<b>05</b> projects', '<b>08+</b> technologies', '<b>03</b> experiences'],
         noteTop: '<span>✦</span> learning by building',
@@ -163,7 +320,7 @@ const applyIndexLanguage = (lang) => {
     };
     set('.nav-links a[href="#about"], .nav-links a[href="#projects"], .nav-links a[href="#works"], .nav-links a[href="#contact"]', copy.nav);
     set('.eyebrow', copy.eyebrow); set('.hero-overline', copy.overline); set('.hero h1', copy.heroTitle); set('.hero-sub', copy.heroSub);
-    set('.hero-cta .btn-primary', copy.primaryCta); set('.hero-cta .btn-ghost', copy.cvCta); set('.hero-meta > span:not(.meta-separator)', copy.stats);
+    set('.hero-cta .btn-primary', copy.primaryCta); set('#hero-ai-cta', copy.aiCta); set('.hero-cta .btn-ghost', copy.cvCta); set('.hero-meta > span:not(.meta-separator)', copy.stats);
     set('.note-top', copy.noteTop); set('.note-bottom', copy.noteBottom); set('.hero-scroll span', copy.discover);
     ['#about', '#projects', '.journey', '#works', '#contact'].forEach((selector, index) => set(`${selector} .section-label`, copy.labels[index]));
     set('.about-intro h2', copy.aboutTitle); set('.about-intro p', copy.aboutLead); set('.about-detail > p', copy.aboutBody); set('.fact-card strong', copy.facts); set('.fact-card small', copy.factLabels);
@@ -205,6 +362,7 @@ const applyIndexLanguage = (lang) => {
             ? (lang === 'en' ? 'Close menu' : 'Menüyü kapat')
             : (lang === 'en' ? 'Open menu' : 'Menüyü aç'));
     }
+    applyChatLanguage(lang);
 };
 
 if (langToggle) {
