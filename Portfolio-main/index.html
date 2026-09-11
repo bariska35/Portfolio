@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Barış Kaya — bilgisayar programcılığı öğrencisi, web ve yazılım geliştirme portföyü.">
+    <meta name="description" id="meta-description" content="Barış Kaya — yazılım geliştirici, web ve uygulama geliştirme portföyü.">
     <title>Barış Kaya — Software & Web Developer</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="style.css">
@@ -29,6 +30,7 @@
                 <li><a href="#works">Alanlarım</a></li>
                 <li><a href="#contact">İletişim</a></li>
                 <li><a href="cv.html" class="nav-cv">CV <span>↗</span></a></li>
+                <li><button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch to English">EN</button></li>
             </ul>
         </nav>
     </header>
@@ -43,7 +45,6 @@
                     <p class="hero-sub">Barış Kaya. Öğrendiklerini uygulamaya dönüştüren, araştırmayı ve farklı çözümler üretmeyi seven bir yazılım geliştiriciyim.</p>
                     <div class="hero-cta">
                         <a href="#projects" class="btn btn-primary">Seçili projeler <span>↗</span></a>
-                        <a href="cv.html" class="btn btn-ghost">CV'yi incele <span>↓</span></a>
                     </div>
                     <div class="hero-meta">
                         <span><b>05</b> proje</span><span class="meta-separator"></span><span><b>08+</b> teknoloji</span><span class="meta-separator"></span><span><b>03</b> deneyim</span>
@@ -73,7 +74,7 @@
         </section>
 
         <div class="tech-strip" aria-label="Kullanılan teknolojiler">
-            <div class="tech-track"><span>PHP</span><i>✦</i><span>JAVA</span><i>✦</i><span>PYTHON</span><i>✦</i><span>JAVASCRIPT</span><i>✦</i><span>MYSQL</span><i>✦</i><span>C#</span><i>✦</i><span>PHP</span><i>✦</i><span>JAVA</span><i>✦</i><span>PYTHON</span><i>✦</i><span>JAVASCRIPT</span><i>✦</i><span>MYSQL</span><i>✦</i><span>C#</span><i>✦</i></div>
+            <div class="tech-track"><div class="tech-set"><span>PHP</span><i>·</i><span>JAVA</span><i>·</i><span>PYTHON</span><i>·</i><span>JAVASCRIPT</span><i>·</i><span>MYSQL</span><i>·</i><span>MSSQL</span><i>·</i><span>HTML</span><i>·</i><span>CSS</span><i>·</i><span>C#</span><i>·</i><span>GIT</span><i>·</i><span>GITHUB</span><i>·</i><span>JDBC</span><i>·</i></div><div class="tech-set" aria-hidden="true"><span>PHP</span><i>·</i><span>JAVA</span><i>·</i><span>PYTHON</span><i>·</i><span>JAVASCRIPT</span><i>·</i><span>MYSQL</span><i>·</i><span>MSSQL</span><i>·</i><span>HTML</span><i>·</i><span>CSS</span><i>·</i><span>C#</span><i>·</i><span>GIT</span><i>·</i><span>GITHUB</span><i>·</i><span>JDBC</span><i>·</i></div></div>
         </div>
 
         <section id="about" class="about reveal">
@@ -99,12 +100,13 @@
 
         <section class="journey reveal"><div class="section-heading"><div class="section-label">/ Deneyim</div><span class="section-index">02—03</span></div><div class="journey-grid"><div><h2>Öğrenmeye<br><span class="gradient-text">devam.</span></h2><p class="section-desc">Eğitim, staj ve projelerden öğrendiklerimi gerçek üretim deneyimiyle birleştiriyorum.</p></div><div class="timeline"><div class="timeline-item"><span class="timeline-year">20.07 — 11.09.2026</span><div><h3>Yazılım Stajyeri</h3><p>NISO Yazılım Teknolojileri · JavaScript, JSON veri akışları, iş kuralları, Git/GitHub</p></div></div><div class="timeline-item"><span class="timeline-year">2024 — 2026</span><div><h3>Bilgisayar Programcılığı · Mezun</h3><p>İzmir Ekonomi Üniversitesi · Veri tabanı, OOP ve web geliştirme</p></div></div><div class="timeline-item"><span class="timeline-year">09.2023 — 06.2024</span><div><h3>Stajyer Teknisyen</h3><p>BDH Bilişim Destek Hizmetleri · HP yetkili servis ve teknik destek süreçleri</p></div></div></div></div></section>
 
-        <section id="works" class="works reveal"><div class="section-heading"><div class="section-label">03 / Çalışma alanları</div><span class="section-index">03—03</span></div><div class="section-title-row"><h2>Merak ettiğim<br><span class="gradient-text">her şey.</span></h2><p>Ders çalışmaları, ödevler ve küçük deneyler. Her başlık, üzerine koyduğum bir sonraki adım.</p></div><div class="works-grid"><a href="php.html" class="work-card"><span class="work-mark">PHP</span><span><b>PHP</b><small>Backend &amp; JSON API</small></span><i>↗</i></a><a href="java.html" class="work-card"><span class="work-mark">JV</span><span><b>Java</b><small>OOP &amp; masaüstü</small></span><i>↗</i></a><a href="sql.html" class="work-card"><span class="work-mark">DB</span><span><b>SQL</b><small>Veri tabanı sistemleri</small></span><i>↗</i></a><a href="javascript.html" class="work-card"><span class="work-mark">JS</span><span><b>JavaScript</b><small>Modern frontend</small></span><i>↗</i></a><a href="python.html" class="work-card"><span class="work-mark">PY</span><span><b>Python</b><small>GUI &amp; veri işleme</small></span><i>↗</i></a><a href="csharp.html" class="work-card"><span class="work-mark">C#</span><span><b>C# Form</b><small>.NET uygulamaları</small></span><i>↗</i></a></div></section>
+        <section id="works" class="works reveal"><div class="section-heading"><div class="section-label">03 / Çalışma alanları</div><span class="section-index">03—03</span></div><div class="section-title-row"><h2>Merak ettiğim<br><span class="gradient-text">her şey.</span></h2><p>Ders çalışmaları, ödevler ve küçük deneyler. Her başlık, üzerine koyduğum bir sonraki adım.</p></div><div class="works-grid"><a href="php.html" class="work-card"><span class="work-mark">PHP</span><span><b>PHP</b><small>Backend &amp; JSON API</small></span><i>↗</i></a><a href="java.html" class="work-card"><span class="work-mark">JV</span><span><b>Java</b><small>OOP &amp; masaüstü</small></span><i>↗</i></a><a href="sql.html" class="work-card"><span class="work-mark">DB</span><span><b>SQL</b><small>Veri tabanı sistemleri</small></span><i>↗</i></a><a href="javascript.html" class="work-card"><span class="work-mark">JS</span><span><b>JavaScript</b><small>Modern frontend</small></span><i>↗</i></a><a href="python.html" class="work-card"><span class="work-mark">PY</span><span><b>Python</b><small>GUI &amp; veri işleme</small></span><i>↗</i></a><a href="csharp.html" class="work-card"><span class="work-mark">C#</span><span><b>C# Form</b><small>.NET uygulamaları</small></span><i>↗</i></a><a href="https://github.com/bariska35" target="_blank" rel="noreferrer" class="work-card"><span class="work-mark">GH</span><span><b>Git &amp; GitHub</b><small>Versiyon kontrolü</small></span><i>↗</i></a><a href="javascript.html" class="work-card"><span class="work-mark">JSON</span><span><b>Excel / JSON</b><small>Veri dönüştürme &amp; akış</small></span><i>↗</i></a></div></section>
 
         <section id="contact" class="contact reveal"><div class="contact-panel"><div class="contact-orbit"></div><div class="section-label">/ Birlikte üretelim</div><h2>Bir fikrin mi var?<br><span class="gradient-text">Konuşalım.</span></h2><p>Bir proje, staj fırsatı veya sadece teknoloji üzerine sohbet… Gelen kutum açık.</p><div class="contact-actions"><a href="mailto:kaya.baris0035@gmail.com" class="btn btn-primary">Email gönder <span>↗</span></a><a href="https://www.linkedin.com/in/bar%C4%B1%C5%9F-kaya-a35417369/" target="_blank" rel="noreferrer" class="btn btn-ghost">LinkedIn <span>↗</span></a></div></div><div class="contact-links"><a href="mailto:kaya.baris0035@gmail.com"><small>EMAIL</small><span>kaya.baris0035@gmail.com</span><i>↗</i></a><a href="https://github.com/bariska35" target="_blank" rel="noreferrer"><small>GITHUB</small><span>github.com/bariska35</span><i>↗</i></a><a href="https://www.linkedin.com/in/bar%C4%B1%C5%9F-kaya-a35417369/" target="_blank" rel="noreferrer"><small>LINKEDIN</small><span>Barış Kaya</span><i>↗</i></a></div></section>
     </main>
 
-    <footer class="footer"><div class="footer-inner"><a href="#home" class="logo">BK<i>.</i></a><p>© 2026 Barış Kaya · Merakla, özenle, sürekli.</p><a href="#home" class="back-top">Başa dön ↑</a></div></footer>
+    <a href="#home" class="back-to-top" id="back-to-top" aria-label="Başa dön">↑ <span>Başa dön</span></a>
+    <footer class="footer"><div class="footer-inner"><a href="#home" class="logo">BK<i>.</i></a><p>© 2026 Barış Kaya · Merakla, özenle, sürekli.</p></div></footer>
     <script src="script.js"></script>
 </body>
 </html>
