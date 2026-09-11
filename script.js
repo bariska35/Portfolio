@@ -2,6 +2,45 @@ const header = document.getElementById('header');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 
+const reducedMotionPreference = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+const pageTransition = document.createElement('div');
+pageTransition.className = 'page-transition';
+pageTransition.setAttribute('aria-hidden', 'true');
+document.body.appendChild(pageTransition);
+window.requestAnimationFrame(() => document.body.classList.add('page-ready'));
+
+document.querySelectorAll('a[href]').forEach(link => {
+    const rawHref = link.getAttribute('href');
+    if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:') || link.target === '_blank') return;
+    const destination = new URL(link.href, window.location.href);
+    if (destination.origin !== window.location.origin || destination.pathname.endsWith('.pdf')) return;
+
+    link.addEventListener('click', event => {
+        if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        document.body.classList.add('page-leaving');
+        window.setTimeout(() => {
+            window.location.href = destination.href;
+        }, reducedMotionPreference ? 0 : 520);
+    });
+});
+
+if (!reducedMotionPreference && window.matchMedia?.('(pointer: fine)').matches) {
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('pointermove', event => {
+            const bounds = button.getBoundingClientRect();
+            const offsetX = ((event.clientX - bounds.left) / bounds.width - .5) * 7;
+            const offsetY = ((event.clientY - bounds.top) / bounds.height - .5) * 5;
+            button.classList.add('magnetic');
+            button.style.transform = `translate3d(${offsetX.toFixed(2)}px,${offsetY.toFixed(2)}px,0)`;
+        }, { passive: true });
+        button.addEventListener('pointerleave', () => {
+            button.style.transform = '';
+            button.classList.remove('magnetic');
+        });
+    });
+}
+
 const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 24);
 window.addEventListener('scroll', updateHeader, { passive: true });
 updateHeader();
@@ -10,6 +49,85 @@ const backToTop = document.getElementById('back-to-top');
 const updateBackToTop = () => backToTop?.classList.toggle('visible', window.scrollY > 520);
 window.addEventListener('scroll', updateBackToTop, { passive: true });
 updateBackToTop();
+
+const scrollProgressBar = document.getElementById('scroll-progress-bar');
+const updateScrollProgress = () => {
+    if (!scrollProgressBar) return;
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+    scrollProgressBar.style.setProperty('--progress', progress.toFixed(3));
+};
+window.addEventListener('scroll', updateScrollProgress, { passive: true });
+window.addEventListener('resize', updateScrollProgress, { passive: true });
+updateScrollProgress();
+
+const cursorGlow = document.getElementById('cursor-glow');
+if (cursorGlow && window.matchMedia?.('(pointer: fine)').matches) {
+    let glowFrame = null;
+    let glowX = 0;
+    let glowY = 0;
+    window.addEventListener('pointermove', event => {
+        glowX = event.clientX;
+        glowY = event.clientY;
+        if (glowFrame) return;
+        glowFrame = window.requestAnimationFrame(() => {
+            cursorGlow.style.transform = `translate3d(${glowX - 90}px,${glowY - 90}px,0)`;
+            cursorGlow.classList.add('visible');
+            glowFrame = null;
+        });
+    }, { passive: true });
+    document.addEventListener('mouseleave', () => cursorGlow.classList.remove('visible'));
+}
+
+const copyTextToClipboard = async email => {
+    try {
+        await navigator.clipboard.writeText(email);
+    } catch {
+        const helper = document.createElement('textarea');
+        helper.value = email;
+        helper.setAttribute('readonly', '');
+        helper.style.position = 'fixed';
+        helper.style.opacity = '0';
+        document.body.appendChild(helper);
+        helper.select();
+        document.execCommand('copy');
+        helper.remove();
+    }
+};
+
+document.querySelectorAll('.copy-email-link').forEach(link => {
+    link.addEventListener('click', async event => {
+        event.preventDefault();
+        await copyTextToClipboard(link.dataset.email);
+        const icon = link.querySelector('i');
+        if (!icon) return;
+        icon.textContent = '✓';
+        link.classList.add('is-copied');
+        window.clearTimeout(link.copyTimer);
+        link.copyTimer = window.setTimeout(() => {
+            icon.textContent = '⧉';
+            link.classList.remove('is-copied');
+        }, 1800);
+    });
+});
+
+if (window.matchMedia?.('(pointer: fine)').matches) {
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('pointermove', event => {
+            const bounds = card.getBoundingClientRect();
+            const x = (event.clientX - bounds.left) / bounds.width - .5;
+            const y = (event.clientY - bounds.top) / bounds.height - .5;
+            card.style.setProperty('--tilt-x', `${(y * -5).toFixed(2)}deg`);
+            card.style.setProperty('--tilt-y', `${(x * 6).toFixed(2)}deg`);
+            card.classList.add('is-tilting');
+        }, { passive: true });
+        card.addEventListener('pointerleave', () => {
+            card.classList.remove('is-tilting');
+            card.style.removeProperty('--tilt-x');
+            card.style.removeProperty('--tilt-y');
+        });
+    });
+}
 
 if (hamburger && navLinks) {
     hamburger.addEventListener('click', () => {
@@ -67,6 +185,78 @@ const chatForm = document.getElementById('ai-chat-form');
 const chatInput = document.getElementById('ai-chat-input');
 const chatMessages = document.getElementById('ai-chat-messages');
 const heroAiCta = document.getElementById('hero-ai-cta');
+
+const codeTypedLines = [...document.querySelectorAll('.code-typed')];
+const codeSequences = [
+    ['developer = {', "'Barış Kaya'", "'software development'", "'PHP', 'Java', 'JS'", "'available'"],
+    ['developer = {', "'Barış Kaya'", "'learning by building'", "'HTML', 'CSS', 'AI'", "'available'"],
+    ['developer = {', "'Barış Kaya'", "'clean code, curious mind'", "'Python', 'SQL', 'Git'", "'open to work'"],
+];
+
+const startCodeTyping = () => {
+    if (!codeTypedLines.length) return;
+
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) {
+        codeTypedLines.forEach((line, index) => {
+            line.textContent = codeSequences[0][index];
+        });
+        return;
+    }
+
+    let sequenceIndex = 0;
+    let lineIndex = 0;
+    let characterIndex = 0;
+    let deleting = false;
+
+    const animate = () => {
+        const sequence = codeSequences[sequenceIndex];
+        const currentLine = codeTypedLines[lineIndex];
+        const target = sequence[lineIndex];
+
+        if (!deleting) {
+            characterIndex += 1;
+            currentLine.textContent = target.slice(0, characterIndex);
+            if (characterIndex >= target.length) {
+                if (lineIndex < codeTypedLines.length - 1) {
+                    lineIndex += 1;
+                    characterIndex = 0;
+                    window.setTimeout(animate, 120);
+                } else {
+                    deleting = true;
+                    window.setTimeout(animate, 1800);
+                }
+                return;
+            }
+            window.setTimeout(animate, 38);
+            return;
+        }
+
+        characterIndex -= 1;
+        currentLine.textContent = target.slice(0, characterIndex);
+        if (characterIndex <= 0) {
+            if (lineIndex > 0) {
+                lineIndex -= 1;
+                characterIndex = sequence[lineIndex].length;
+                window.setTimeout(animate, 55);
+            } else {
+                deleting = false;
+                sequenceIndex = (sequenceIndex + 1) % codeSequences.length;
+                characterIndex = 0;
+                window.setTimeout(animate, 450);
+            }
+            return;
+        }
+        window.setTimeout(animate, 22);
+    };
+
+    codeTypedLines.forEach(line => {
+        line.textContent = '';
+    });
+    animate();
+};
+
+startCodeTyping();
 const chatCopy = {
     tr: {
         subtitle: 'CV ve projeler hakkında sor',
@@ -329,6 +519,8 @@ const applyIndexLanguage = (lang) => {
     set('.journey h2', copy.journeyTitle); set('.journey .section-desc', copy.journeyDesc); set('.timeline h3', copy.timelineTitles); set('.timeline p', copy.timelineDescriptions);
     set('#works .section-title-row h2', copy.worksTitle); set('#works .section-title-row p', copy.worksDesc); set('#works .work-card small', copy.workLabels);
     set('#contact .contact-panel .section-label', copy.contactLabel); set('#contact .contact-panel h2', copy.contactTitle); set('#contact .contact-panel p', copy.contactDesc); set('#contact .contact-actions .btn-primary', copy.contactButtons[0]); set('#contact .contact-actions .btn-ghost', copy.contactButtons[1]); set('.footer p', copy.footer);
+    const emailLink = document.querySelector('.copy-email-link');
+    if (emailLink) emailLink.setAttribute('aria-label', lang === 'en' ? 'Copy email' : 'Emaili kopyala');
     langToggle.textContent = lang === 'tr' ? 'EN' : 'TR'; langToggle.classList.toggle('is-en', lang === 'en'); langToggle.setAttribute('aria-label', lang === 'tr' ? 'Switch to English' : 'Türkçeye geç'); document.documentElement.lang = lang;
     document.title = lang === 'tr' ? 'Barış Kaya — Yazılım Geliştirici' : 'Barış Kaya — Software Developer';
 
