@@ -233,6 +233,16 @@ main,section {
     font-weight: 600;
     margin-bottom: 30px;
 }
+.hero-name {
+    display: block;
+}
+.hero-role {
+    display: block;
+    margin-top: 17px;
+    color: var(--muted);
+    font: 500 clamp(18px,2.2vw,28px)/1.1 'DM Sans',sans-serif;
+    letter-spacing: -.5px;
+}
 .gradient-text {
     background: linear-gradient(115deg,#d4a3ff 0%,#a466ff 48%,#6969f4 100%);
     -webkit-background-clip: text;
