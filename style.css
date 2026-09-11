@@ -15,7 +15,7 @@
     --accent: #b56cff;
     --accent-2: #6d67f6;
     --green: #70e0ae;
-    --max: 1240px;
+    --max: 1420px;
     --accent1: var(--accent);
     --accent2: var(--accent-2);
     --white: #fff;
@@ -128,7 +128,8 @@ button {
 }
 .nav-links a {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 15px;
+    font-weight: 500;
     text-decoration: none;
     transition: .25s;
 }
@@ -504,7 +505,7 @@ main,section {
     }
 }
 section:not(.hero) {
-    width: min(var(--max),88%);
+    width: min(var(--max),96%);
     margin: auto;
     padding: 125px 0;
 }
@@ -557,8 +558,8 @@ section:not(.hero) {
 }
 .about-grid {
     display: grid;
-    grid-template-columns: .9fr 1fr;
-    gap: 130px;
+    grid-template-columns: .95fr 1.05fr;
+    gap: 170px;
 }
 .about-intro p {
     max-width: 360px;
@@ -577,7 +578,7 @@ section:not(.hero) {
     color: var(--muted);
     font-size: 16px;
     line-height: 1.9;
-    max-width: 550px;
+    max-width: 620px;
 }
 .fact-grid {
     display: grid;
@@ -624,11 +625,11 @@ section:not(.hero) {
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(2,1fr);
-    gap: 17px;
+    gap: 24px;
 }
 .project-card {
     position: relative;
-    min-height: 310px;
+    min-height: 345px;
     padding: 27px 29px;
     border: 1px solid var(--border);
     border-radius: 13px;
@@ -656,7 +657,7 @@ section:not(.hero) {
 }
 .project-featured {
     grid-column: 1/-1;
-    min-height: 365px;
+    min-height: 420px;
     display: grid;
     grid-template-columns: .88fr 1.1fr;
     gap: 55px;
