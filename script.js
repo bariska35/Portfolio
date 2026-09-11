@@ -64,7 +64,7 @@ const langToggle = document.getElementById('lang-toggle');
 const indexTranslations = {
     tr: {
         nav: ['Hakkımda', 'Projeler', 'Alanlarım', 'İletişim'],
-        eyebrow: '<span class="status-dot"></span> Yeni fırsatlara açığım <span class="eyebrow-line"></span> İzmir, TR',
+        eyebrow: '<span class="status-dot"></span> Yeni iş fırsatlarına açığım <span class="eyebrow-line"></span> İzmir, TR',
         overline: 'YAZILIM GELİŞTİRİCİ <span>·</span> İZMİR, TR',
         heroTitle: 'Yazılım<br><span class="gradient-text">geliştirici.</span>',
         heroSub: 'Barış Kaya. Öğrendiklerini uygulamaya dönüştüren, araştırmayı ve farklı çözümler üretmeyi seven bir yazılım geliştiriciyim.',
